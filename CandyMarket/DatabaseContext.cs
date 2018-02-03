@@ -9,7 +9,7 @@ namespace CandyMarket
 	{
 		private int _countOfTaffy;
 		private int _countOfCandyCoated;
-		private int _countOfChocolateBar;
+		private int _countOfCompressedSugar;
 		private int _countOfZagnut;
 
 		/**
@@ -45,7 +45,7 @@ namespace CandyMarket
 					++_countOfCandyCoated;
 					break;
 				case CandyType.CompressedSugar:
-					++_countOfChocolateBar;
+					++_countOfCompressedSugar;
 					break;
 				case CandyType.ZagnutStyle:
 					++_countOfZagnut;
@@ -54,5 +54,29 @@ namespace CandyMarket
 					break;
 			}
 		}
-	}
+
+        internal void RemoveCandy(char candyToRemove)
+        {
+            var candyOption = (CandyType)int.Parse(candyToRemove.ToString());
+
+            switch (candyOption)
+            {
+                case CandyType.TaffyNotLaffy:
+                    --_countOfTaffy;
+                    break;
+                case CandyType.CandyCoated:
+                    --_countOfCandyCoated;
+                    break;
+                case CandyType.CompressedSugar:
+                    --_countOfCompressedSugar;
+                    break;
+                case CandyType.ZagnutStyle:
+                    --_countOfZagnut;
+                    break;
+                default:
+                    break;
+            }
+
+        }
+    }
 }

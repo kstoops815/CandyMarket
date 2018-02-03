@@ -15,7 +15,7 @@ namespace CandyMarket
 			while (run)
 			{
 				ConsoleKeyInfo userInput = MainMenu();
-
+                ConsoleKeyInfo selectedCandyType;
 				switch (userInput.KeyChar)
 				{
 					case '0':
@@ -24,7 +24,7 @@ namespace CandyMarket
 					case '1': // add candy to your bag
 
 						// select a candy type
-						var selectedCandyType = AddNewCandyType(db);
+						selectedCandyType = DisplayCandyMenu(db, "What type of candy did you get?");
 
 						/** MORE DIFFICULT DATA MODEL
 						 * show a new menu to enter candy details
@@ -35,9 +35,11 @@ namespace CandyMarket
 						db.SaveNewCandy(selectedCandyType.KeyChar);
 						break;
 					case '2':
+                        selectedCandyType = DisplayCandyMenu(db, "What kind of candy did you eat?");
+                        db.RemoveCandy(selectedCandyType.KeyChar);
 						/** eat candy
 						 * select a candy type
-						 * 
+						 
 						 * select specific candy details to eat from list filtered to selected candy type
 						 * 
 						 * enjoy candy
@@ -101,12 +103,12 @@ namespace CandyMarket
 			return userOption;
 		}
 
-		static ConsoleKeyInfo AddNewCandyType(DatabaseContext db)
+		static ConsoleKeyInfo DisplayCandyMenu(DatabaseContext db, string MenuText)
 		{
 			var candyTypes = db.GetCandyTypes();
 
-			var newCandyMenu = new View()
-					.AddMenuText("What type of candy did you get?")
+            var newCandyMenu = new View()
+                    .AddMenuText(MenuText)
 					.AddMenuOptions(candyTypes);
 
 			Console.Write(newCandyMenu.GetFullMenu());
