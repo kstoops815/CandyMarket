@@ -36,6 +36,8 @@ namespace CandyMarket
 						break;
 					case '2':
                         selectedCandyType = DisplayCandyMenu(db, "What kind of candy did you eat?");
+                        ShowCandy(db);
+                        Console.ReadKey();
                         db.RemoveCandy(selectedCandyType.KeyChar);
 						/** eat candy
 						 * select a candy type
@@ -46,6 +48,8 @@ namespace CandyMarket
 						 */
 						break;
 					case '3':
+                        selectedCandyType = DisplayCandyMenu(db, "What kind of candy did you throw away?");
+                        db.RemoveCandy(selectedCandyType.KeyChar);
 						/** throw away candy
 						 * select a candy type
 						 * if(moreDifficultDataModel) enhancement - give user the option to throw away old candy in one action. this would require capturing the detail of when the candy was new.
@@ -56,6 +60,9 @@ namespace CandyMarket
 						 */
 						break;
 					case '4':
+
+                        selectedCandyType = DisplayCandyMenu(db, "What kind of candy did you give away?");
+                        db.RemoveCandy(selectedCandyType.KeyChar);
 						/** give candy
 						 * feel free to hardcode your users. no need to create a whole UI to register users.
 						 * no one is impressed by user registration unless it's just amazingly fast & simple
@@ -96,6 +103,7 @@ namespace CandyMarket
 			View mainMenu = new View()
 					.AddMenuOption("Did you just get some new candy? Add it here.")
 					.AddMenuOption("Do you want to eat some candy? Take it here.")
+                    .AddMenuOption("Show all of your current candy.")
 					.AddMenuText("Press 0 to exit.");
 
 			Console.Write(mainMenu.GetFullMenu());
@@ -116,5 +124,20 @@ namespace CandyMarket
 			ConsoleKeyInfo selectedCandyType = Console.ReadKey();
 			return selectedCandyType;
 		}
+
+        static void ShowCandy(DatabaseContext db)
+        {
+            var currentCandy = db.GetCurrentCandy();
+            var currentCandyMenu = new View();
+
+            foreach (var typeOfCandy in currentCandy)
+            {
+                if(typeOfCandy.Value >= 0)
+                {
+                    currentCandyMenu.AddMenuText($"You have {typeOfCandy.Value} of {typeOfCandy.Key}.");
+                }
+            }
+            Console.Write(currentCandyMenu.GetFullMenu());
+        }
 	}
 }
