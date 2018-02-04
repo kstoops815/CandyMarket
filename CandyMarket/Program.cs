@@ -74,10 +74,18 @@ namespace CandyMarket
 						 */
 						break;
 					case '5':
-						/** trade candy
+                        selectedCandyType = DisplayCandyMenu(db, "What kind of candy did you give away?");
+                        db.RemoveCandy(selectedCandyType.KeyChar);
+                        /** trade candy
 						 * this is the next logical step. who wants to just give away candy forever?
 						 */
-						break;
+                        break;
+                    case '6':
+                        // show all available candy for above options
+                        //selectedCandyType = DisplayCandyMenu(db, "What kind of candy did you throw away?");
+                        ShowCandy(db);
+                        Console.ReadKey();
+                        break;
 					default: // what about requesting candy? like a wishlist. that would be cool.
 						break;
 				}
@@ -103,7 +111,10 @@ namespace CandyMarket
 			View mainMenu = new View()
 					.AddMenuOption("Did you just get some new candy? Add it here.")
 					.AddMenuOption("Do you want to eat some candy? Take it here.")
-                    .AddMenuOption("Show all of your current candy.")
+                    .AddMenuOption("Did you throw away some candy? Remove it here.")
+                    .AddMenuOption("Do you want to give away some of your candy? Do it here.")
+                    .AddMenuOption("Do you want to trade some of your candy? Trade it here.")
+                    .AddMenuOption("Show all of your available candy.")
 					.AddMenuText("Press 0 to exit.");
 
 			Console.Write(mainMenu.GetFullMenu());
@@ -132,11 +143,17 @@ namespace CandyMarket
 
             foreach (var typeOfCandy in currentCandy)
             {
-                if(typeOfCandy.Value >= 0)
+                if(typeOfCandy.Value >= 1)
                 {
                     currentCandyMenu.AddMenuText($"You have {typeOfCandy.Value} of {typeOfCandy.Key}.");
-                }
+
+                    if(currentCandyMenu == null)
+                    {
+                        Console.WriteLine("You have no candy. Go back one menu and select option 1 to add your candy.");
+                    }
+                }              
             }
+
             Console.Write(currentCandyMenu.GetFullMenu());
         }
 	}
