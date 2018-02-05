@@ -32,11 +32,22 @@ namespace CandyMarket
         internal Dictionary<string, int> GetCurrentCandy()
         {
             var contents = new Dictionary<string, int>();
-            contents.Add("Taffy", _countOfTaffy);
-            contents.Add("Candy Coated", _countOfCandyCoated);
-            contents.Add("Compressed Sugar", _countOfCompressedSugar);
-            contents.Add("Zagnut", _countOfZagnut);
-
+            if(_countOfTaffy > 0)
+            {
+                contents.Add("Taffy", _countOfTaffy);
+            }
+            if(_countOfCandyCoated > 0)
+            {
+                contents.Add("Candy Coated", _countOfCandyCoated);
+            }
+            if(_countOfCompressedSugar > 0)
+            {
+                contents.Add("Compressed Sugar", _countOfCompressedSugar);
+            }
+            if(_countOfZagnut > 0)
+            {
+                contents.Add("Zagnut", _countOfZagnut);
+            }
             return contents;
         }
 

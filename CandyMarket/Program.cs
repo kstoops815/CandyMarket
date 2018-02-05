@@ -84,7 +84,6 @@ namespace CandyMarket
                         // show all available candy for above options
                         //selectedCandyType = DisplayCandyMenu(db, "What kind of candy did you throw away?");
                         ShowCandy(db);
-                        Console.ReadKey();
                         break;
 					default: // what about requesting candy? like a wishlist. that would be cool.
 						break;
@@ -140,18 +139,22 @@ namespace CandyMarket
         {
             var currentCandy = db.GetCurrentCandy();
             var currentCandyMenu = new View();
+            
 
             foreach (var typeOfCandy in currentCandy)
             {
-                if(typeOfCandy.Value >= 1)
+                if (currentCandy.Count > 0)
                 {
                     currentCandyMenu.AddMenuText($"You have {typeOfCandy.Value} of {typeOfCandy.Key}.");
+                }
 
-                    if(currentCandyMenu == null)
-                    {
-                        Console.WriteLine("You have no candy. Go back one menu and select option 1 to add your candy.");
-                    }
-                }              
+                if(currentCandy.Count < 1)
+                {
+                    var noCandyMenu = new View()
+                    .AddMenuOption("You have no candy right now! Go add some!")
+                    .AddMenuText("Press 0 to exit.");
+
+                }             
             }
 
             Console.Write(currentCandyMenu.GetFullMenu());
