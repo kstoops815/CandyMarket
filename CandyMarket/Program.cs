@@ -39,6 +39,7 @@ namespace CandyMarket
                         ShowCandy(db);
                         Console.ReadKey();
                         db.RemoveCandy(selectedCandyType.KeyChar);
+                        
 						/** eat candy
 						 * select a candy type
 						 
@@ -84,6 +85,7 @@ namespace CandyMarket
                         // show all available candy for above options
                         //selectedCandyType = DisplayCandyMenu(db, "What kind of candy did you throw away?");
                         ShowCandy(db);
+                        Console.Read();
                         break;
 					default: // what about requesting candy? like a wishlist. that would be cool.
 						break;
@@ -139,7 +141,11 @@ namespace CandyMarket
         {
             var currentCandy = db.GetCurrentCandy();
             var currentCandyMenu = new View();
-            
+//            var noCandyMenu = new View();
+
+//            noCandyMenu.AddMenuText("You have no candy right now! Go add some!")
+  //          .AddMenuText("Press 0 to go back.");
+    //        Console.Write(noCandyMenu.GetFullMenu());
 
             foreach (var typeOfCandy in currentCandy)
             {
@@ -148,16 +154,19 @@ namespace CandyMarket
                     currentCandyMenu.AddMenuText($"You have {typeOfCandy.Value} of {typeOfCandy.Key}.");
                 }
 
-                if(currentCandy.Count < 1)
-                {
-                    var noCandyMenu = new View()
-                    .AddMenuOption("You have no candy right now! Go add some!")
-                    .AddMenuText("Press 0 to exit.");
+                           
+            }
 
-                }             
+            if (currentCandy.Count <= 0)
+            {
+                currentCandyMenu
+                .AddMenuText("You have no candy right now! Go add some!")
+                .AddMenuText("Press 0 to go back.");
+                Console.Write(currentCandyMenu.GetFullMenu());
             }
 
             Console.Write(currentCandyMenu.GetFullMenu());
+            
         }
 	}
 }
