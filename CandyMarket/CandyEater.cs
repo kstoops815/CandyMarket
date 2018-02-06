@@ -27,10 +27,9 @@ namespace CandyMarket
             _db.SaveNewCandy(receiver, type, 1);
         }
 
-        public void EatCandy(CandyType type, string receiver)
+        public void EatCandy(CandyType type)
         {
             _db.RemoveCandy(Name, type);
-            _db.SaveNewCandy(receiver, type, 1);
         }
     }
 }
