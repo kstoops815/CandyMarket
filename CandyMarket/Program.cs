@@ -10,6 +10,8 @@ namespace CandyMarket
 		{
 			// wanna be a l33t h@x0r? skip all this console menu nonsense and go with straight command line arguments. something like `candy-market add taffy "blueberry cheesecake" yesterday`
 			var db = SetupNewApp();
+            var me = new CandyEater("Kelly", db);
+            var significantOther = new CandyEater("Position Currently Open", db);
 
 			var run = true;
 			while (run)
@@ -26,19 +28,23 @@ namespace CandyMarket
 						// select a candy type
 						selectedCandyType = DisplayCandyMenu(db, "What type of candy did you get?");
 
-						/** MORE DIFFICULT DATA MODEL
+                        /** MORE DIFFICULT DATA MODEL
 						 * show a new menu to enter candy details
 						 * it would be convenient to show the menu in stages e.g. press enter to go to next detail stage, but write the whole screen again with responses populated so far.
 						 */
 
-						// if(moreDifficultDataModel) bug - this is passing candy type right now (which just increments in our DatabaseContext), but should also be passing candy details
-						db.SaveNewCandy(selectedCandyType.KeyChar);
-						break;
+                        // if(moreDifficultDataModel) bug - this is passing candy type right now (which just increments in our DatabaseContext), but should also be passing candy details
+
+                        var candyType = (CandyType)int.Parse(selectedCandyType.KeyChar.ToString());
+                        me.AddCandy(candyType, 1);
+                        significantOther.AddCandy(candyType, 1);
+
+                        break;
 					case '2':
+                        ShowCandy(db);
                         selectedCandyType = DisplayCandyMenu(db, "What kind of candy did you eat?");
                         ShowCandy(db);
-                        Console.ReadKey();
-                        db.RemoveCandy(selectedCandyType.KeyChar);
+                        me.EatCandy( name, selectedCandyType);
                         
 						/** eat candy
 						 * select a candy type
@@ -85,7 +91,7 @@ namespace CandyMarket
                         // show all available candy for above options
                         //selectedCandyType = DisplayCandyMenu(db, "What kind of candy did you throw away?");
                         ShowCandy(db);
-                        Console.Read();
+                        Console.ReadKey();
                         break;
 					default: // what about requesting candy? like a wishlist. that would be cool.
 						break;
@@ -151,7 +157,9 @@ namespace CandyMarket
             {
                 if (currentCandy.Count > 0)
                 {
-                    currentCandyMenu.AddMenuText($"You have {typeOfCandy.Value} of {typeOfCandy.Key}.");
+                    currentCandyMenu
+                        .AddMenuText($"You have {typeOfCandy.Value} of {typeOfCandy.Key}.")
+                        .AddMenuText("Press any key to continue");
                 }
 
                            
@@ -161,11 +169,11 @@ namespace CandyMarket
             {
                 currentCandyMenu
                 .AddMenuText("You have no candy right now! Go add some!")
-                .AddMenuText("Press 0 to go back.");
-                Console.Write(currentCandyMenu.GetFullMenu());
+                .AddMenuText("Press any key to go back.");
             }
 
             Console.Write(currentCandyMenu.GetFullMenu());
+            Console.ReadKey();
             
         }
 	}
